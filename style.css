@@ -1,0 +1,214 @@
+/*
+Особенности:
+- На больших экранах (> 60em) это сетка 4х5
+- В ней размещены 13 элементов
+- Некоторые элементы занимают по 2 колонки и/или 2 ряда
+- У всех картинок пропорции 1000 : 1270
+- Между ячейками интервал в 1rem, а по периметру грида отступ тоже в 1rem
+- Максимальная ширина грида ограничена до 60em
+*/
+
+/*
+Grid Layout
+Width = (width_of_grid - (gutters + padding)) / no_of_cols
+Height = 1270 * width / 1000
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+/*
+Объявив переменную в псевдо-классе :root, автор CSS может избежать ненужных повторений, используя эту переменную.
+*/
+
+:root {
+  --width: calc((100vw - 3rem) / 2);
+  --height: calc(1270 * var(--width) / 1000);
+}
+
+.main {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/*
+У нас есть грид. Мы воспользовались авторазмещением, чтобы расположить в нем элементы, и некоторые элементы занимают по
+нескольку колонок и рядов. Так что, задача решена? Не совсем. Если вы посмотрите пример на CodePen выше в режиме
+редактирования, вы заметите, что в некоторых контрольных точках в гриде появлятся дырки.
+
+Это из-за того, что по умолчанию авторазмещение использует разреженный (sparse) алгоритм упаковки, который может
+оставлять дырки в раскладке. Хорошая новость в том, что мы можем переключиться на плотный (dense) алгоритм упаковки,
+который заставляет браузер оглядываться назад и заполнять все пустые ячейки в раскладке.
+*/
+
+.grid__container {
+  display: grid;
+  grid-gap: 1rem;
+  grid-auto-flow: dense;
+  grid-template-columns: repeat(2, var(--width));
+  grid-auto-rows: var(--height);
+
+  justify-content: center;
+
+  margin: 4rem auto;
+  font-family: athelas ,georgia ,serif;
+  color: #333;
+}
+
+.grid__tag {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.grid__title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 2.25rem;
+  line-height: 1.5;
+}
+
+.grid__text {
+  margin-top: 0;
+}
+
+.grid__promo-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: #fff;
+}
+
+hr {
+  width: 2rem;
+  margin: 0;
+  margin-top: 1rem;
+}
+
+.grid__img {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: cover;
+  /*backface-visibility: hidden;*/
+  /*transform: translateZ(0);*/
+  transition: transform 0.3s ease-out;
+}
+
+.grid__img:hover,
+.grid__img:focus {
+  transform: scale(1.05);
+}
+
+.grid__img--1 {
+  background-image: url("img/photo-1.jpg");
+}
+
+.grid__img--2 {
+  background-image: url("img/photo-2.jpg");
+}
+
+.grid__img--3 {
+  background-image: url("img/photo-3.jpg");
+}
+
+.grid__img--4 {
+  background-image: url("img/photo-4.jpg");
+}
+
+.grid__img--5 {
+  background-image: url("img/photo-5.jpg");
+}
+
+.grid__img--6 {
+  background-image: url("img/photo-6.jpg");
+}
+
+.grid__img--7 {
+  background-image: url("img/photo-7.jpg");
+}
+
+.grid__img--8 {
+  background-image: url("img/photo-8.jpg");
+}
+
+.grid__img--9 {
+  background-image: url("img/photo-9.jpg");
+}
+
+.grid__img--10 {
+  background-image: url("img/photo-10.jpg");
+}
+
+.grid__img--11 {
+  background-image: url("img/photo-11.jpg");
+}
+
+/**
+ * Col and row spans
+ */
+
+.grid__cell {
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.grid__flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grid__grey {
+  padding: 0 1rem;
+  background-color: #777;
+}
+
+/*
+Наконец, можно указывать линии с помощью того, сколько полос должен занять элемент.
+Например, grid-row-end: span 3 означает, что номер конечной линии — начальная грид-линия + 3 полосы.
+*/
+
+.grid__wide-1 {
+  grid-column-end: span 1;
+}
+
+.grid__wide-2 {
+  grid-column-end: span 2;
+}
+
+.grid__tall-1 {
+  grid-row-end: span 1;
+}
+
+.grid__tall-2 {
+  grid-row-end: span 2;
+}
+
+
+@media screen and (min-width: 30em) and (max-width: 60em) {
+  :root {
+    --width: calc((100vw - 4rem) / 3);
+  }
+
+  .grid__container {
+    grid-template-columns: repeat(3, var(--width));
+  }
+
+  .grid__wide-3 {
+    grid-column-end: span 3;
+  }
+}
+
+@media screen and (min-width: 60em) {
+  :root {
+    --width: calc((60em - 5rem) / 4);
+  }
+
+  .grid__container {
+    grid-template-columns: repeat(4, var(--width));
+  }
+}
